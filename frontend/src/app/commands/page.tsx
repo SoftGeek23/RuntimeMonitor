@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 
 const linuxCommands = [
+  'send_file',
+  'encrypt_file',
   'cat',
   'ls',
   'mv',
@@ -20,7 +22,10 @@ const linuxCommands = [
 
 export default function CommandsPage() {
   const [monitoring, setMonitoring] = useState<Record<string, boolean>>(
-    linuxCommands.reduce((acc, cmd) => ({ ...acc, [cmd]: false }), {})
+    linuxCommands.reduce((acc, cmd) => ({
+      ...acc,
+      [cmd]: cmd === 'send_file' || cmd === 'encrypt_file'
+    }), {})
   );
 
   const toggleMonitoring = (command: string) => {

@@ -68,7 +68,7 @@ export default function Home() {
               Agent Guardian
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Your intelligent AI assistant for monitoring and protection
+              Guarding against rogue AI agent actions
             </p>
           </div>
 
