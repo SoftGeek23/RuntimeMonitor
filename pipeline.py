@@ -223,14 +223,29 @@ def main():
         type=str,
         help="Override path for bad prompts file.",
     )
+    parser.add_argument(
+        "--num-good",
+        type=int,
+        help="Limit number of good prompts to run (default: all).",
+    )
+    parser.add_argument(
+        "--num-bad",
+        type=int,
+        help="Limit number of bad prompts to run (default: all).",
+    )
 
     args = parser.parse_args()
 
     prompts_by_category: Dict[str, List[str]] = {}
-    for category, override in (("good", args.good_file), ("bad", args.bad_file)):
+    for category, override, limit in (
+        ("good", args.good_file, args.num_good),
+        ("bad", args.bad_file, args.num_bad),
+    ):
         prompt_file = choose_prompt_file(category, override)
         if prompt_file:
             prompts_by_category[category] = load_prompts(prompt_file)
+            if limit is not None:
+                prompts_by_category[category] = prompts_by_category[category][:limit]
             print(f"Loaded {len(prompts_by_category[category])} {category} prompts from {prompt_file}")
         else:
             prompts_by_category[category] = []
