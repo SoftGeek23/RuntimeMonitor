@@ -89,18 +89,6 @@ def find_tool_calls(text: str) -> Iterable[re.Match]:
     return TOOL_PATTERN.finditer(text)
 
 
-def locate_token_for_char(offsets: List[List[int]], char_index: int) -> Optional[int]:
-    """
-    Map a character index to the token position using tokenizer offsets.
-
-    We choose the first token whose span covers the character.
-    """
-    for idx, (start, end) in enumerate(offsets):
-        if start <= char_index < end:
-            return idx
-    return None
-
-
 def collect_tool_activations(
     text: str,
     tokenizer: AutoTokenizer,
@@ -108,7 +96,7 @@ def collect_tool_activations(
     layer_index: int,
 ) -> List[Dict]:
     """
-    Teacher-force the text and collect activations at the end of each tool call.
+    Teacher-force the text and collect activations pooled over each tool call span.
 
     Returns a list of dicts with tool_call text and activation vector.
     """
@@ -139,17 +127,24 @@ def collect_tool_activations(
 
     activations = []
     for match in matches:
-        end_char_index = match.end() - 1  # final character of the tool call (the closing bracket)
-        token_idx = locate_token_for_char(offsets, end_char_index)
-        if token_idx is None:
+        start_char = match.start()
+        end_char = match.end() - 1  # inclusive
+        token_indices = [
+            idx
+            for idx, (start, end) in enumerate(offsets)
+            if not (end <= start_char or start > end_char)
+        ]
+        if not token_indices:
             continue
+        pooled = hidden[token_indices].mean(dim=0)
         activations.append(
             {
                 "tool_call": match.group(),
-                "token_index": token_idx,
+                "token_span": [token_indices[0], token_indices[-1]],
+                "token_index": token_indices[-1],  # kept for compatibility (uses span end)
                 "char_range": [match.start(), match.end()],
                 "layer_index": layer_index,
-                "activation": hidden[token_idx].tolist(),
+                "activation": pooled.tolist(),
             }
         )
 
