@@ -139,8 +139,8 @@ def collect_tool_activations(
 
     activations = []
     for match in matches:
-        start_char_index = match.start()  # beginning of "[TOOL:"
-        token_idx = locate_token_for_char(offsets, start_char_index)
+        end_char_index = match.end() - 1  # final character of the tool call (the closing bracket)
+        token_idx = locate_token_for_char(offsets, end_char_index)
         if token_idx is None:
             continue
         activations.append(
