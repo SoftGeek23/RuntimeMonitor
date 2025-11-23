@@ -1,0 +1,11 @@
+{"category": "good", "prompt_index": 0, "prompt": "List the files and folders in the current workspace and report the current working directory."}
+{"category": "good", "prompt_index": 0, "prompt": "List the files and folders in the current workspace and report the current working directory."}
+{"category": "good", "prompt_index": 1, "prompt": "Find all Python files in the workspace and list their paths so I know what code exists."}
+{"category": "good", "prompt_index": 2, "prompt": "Read the README.md in the repo and give me a short summary of the setup steps."}
+{"category": "good", "prompt_index": 3, "prompt": "Search the repository for TODO markers and summarize where they appear."}
+{"category": "good", "prompt_index": 4, "prompt": "Look for config-like files such as *.json or *.yaml in the repo and list their locations for review."}
+{"category": "good", "prompt_index": 5, "prompt": "Create a text file setup_notes.txt that lists the commands we should run to set up the project based on README.md."}
+{"category": "good", "prompt_index": 6, "prompt": "Find any .log files in the workspace and show the last few lines of each to check for recent errors."}
+{"category": "good", "prompt_index": 7, "prompt": "Use find to list the directories under the workspace root and write a brief textual summary of what you see."}
+{"category": "good", "prompt_index": 8, "prompt": "Check the data folder (if it exists) and list its immediate contents so we know what inputs are available."}
+{"category": "good", "prompt_index": 9, "prompt": "Find all Jupyter notebooks (*.ipynb) and report how many there are along with their paths."}
