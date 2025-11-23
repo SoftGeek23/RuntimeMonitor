@@ -244,7 +244,8 @@ class AgenticInference:
         user_message: str,
         max_new_tokens: int = 2048,
         temperature: float = 0.7,
-        include_system: bool = True
+        include_system: bool = True,
+        save_path: Optional[str] = None,
     ) -> str:
         """
         Run inference on a user message.
@@ -254,6 +255,7 @@ class AgenticInference:
             max_new_tokens: Maximum number of tokens to generate
             temperature: Sampling temperature
             include_system: Whether to include the system prompt
+            save_path: Optional path to append the raw generation JSONL
             
         Returns:
             Generated response text
@@ -351,6 +353,13 @@ class AgenticInference:
         
         print(response)
         print(f"\n{'='*60}\n")
+
+        if save_path:
+            os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
+            record = {"generation": response}
+            with open(save_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record) + "\n")
+            print(f"Saved generation to {save_path}")
         
         return response
     
