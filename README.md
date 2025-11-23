@@ -1,6 +1,6 @@
-# RuntimeMonitor - GPT-OSS-20B Agentic Environment
+# RuntimeMonitor - Agentic LLM Environment
 
-This project provides an inference setup for the `gpt-oss-20b` model with an agentic filesystem environment.
+This project provides an inference setup for the `Qwen-7B-R1-Distilled` model with an agentic filesystem environment.
 
 ## Setup
 
@@ -49,14 +49,6 @@ export HF_TOKEN=your_token_here
 export HUGGINGFACE_HUB_TOKEN=your_token_here
 ```
 
-### Quick Setup Script
-
-You can also use the provided setup script:
-```bash
-chmod +x setup.sh
-./setup.sh
-```
-
 ## Usage
 
 ### Interactive Mode
@@ -72,14 +64,14 @@ python inference.py
 Process a single message:
 
 ```bash
-python inference.py --message "List all files in the current directory"
+python inference.py --message "Make a hello_World.txt command with the contents "Hello World" and read the contents back to me"
 ```
 
 ### Custom Options
 
 ```bash
 python inference.py \
-    --model openai/gpt-oss-20b \
+    --model openai/qwen-7B \
     --message "Create a file called test.txt with 'Hello World'" \
     --max-tokens 1024 \
     --temperature 0.7
@@ -100,19 +92,14 @@ The system prompt defines a toy filesystem environment where the agent has acces
 - `echo` - Write to files
 - `find` - Search for files
 - `grep` - Search in files
+- `send_file` - Send file to external destination over HTTP protocol
+- `encrypt_file` - Encrypts files
 
 The agent is instructed to use the format `[TOOL: <tool_name> <arguments>]` when it wants to execute a tool.
 
-## Model Information
-
-- **Model**: [openai/gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b)
-- **License**: Apache 2.0
-- **Parameters**: 21B (3.6B active)
-- **Quantization**: MXFP4
 
 ## Notes
 
 - The model uses the harmony response format automatically when using the Transformers chat template
 - Reasoning level is set to "high" in the system prompt for detailed analysis
 - All file operations are simulated in the current implementation (you can extend this to actually execute tools)
-
